@@ -44,10 +44,9 @@
            (response "text/plain")))
 
   (GET "/logs/:file/clean" [file :as req]
-       (-> "/tmp/%s"
-           (format file)
-           (io/delete-file true)
-           (response "text/plain")))
+       (let [ffile (format "/tmp/%s" file)]
+         (spit ffile "")
+         (response (format "File '%s' has been cleaned up!" ffile) "text/plain")))
 
   (GET "/" []
        (-> "A simple webserver to retrieve the log file specified in the url /logs/:file."
