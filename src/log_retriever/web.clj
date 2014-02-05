@@ -27,6 +27,12 @@
   (-> (resp/response body)
       (resp/content-type content-type)))
 
+(defn read-file [file] "Read the content of a file and returns it."
+  (let [iofile (io/file file)]
+    (if (.exists iofile)
+      (slurp file)
+      (format "File '%s' does not exist!" file))))
+
 (defroutes app
   (ANY "/repl" {:as req}
        (drawbridge req))
@@ -34,7 +40,7 @@
   (GET "/logs/:file" [file :as req]
        (-> "/tmp/%s"
            (format file)
-           slurp
+           read-file
            (response "text/plain")))
 
   (GET "/logs/:file/clean" [file :as req]
