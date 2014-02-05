@@ -1,6 +1,5 @@
 (defproject log-retriever "0.1.0-SNAPSHOT"
-  :description "Exploration of emacs-lisp's repository marmalade api."
-  :url "http://infinite-citadel-3625.herokuapp.com/"
+  :description "webapp log retriever."
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[clj-http            "0.7.8"]
