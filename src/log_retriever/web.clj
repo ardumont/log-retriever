@@ -37,6 +37,12 @@
            slurp
            (response "text/plain")))
 
+  (GET "/logs/:file/clean" [file :as req]
+       (-> "/tmp/%s"
+           (format file)
+           (io/delete-file true)
+           (response "text/plain")))
+
   (GET "/" []
        (-> "A simple webserver to retrieve the log file specified in the url /logs/:file."
             (response "text/plain")))
