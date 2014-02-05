@@ -23,7 +23,7 @@
       (session/wrap-session)
       (basic/wrap-basic-authentication authenticated?)))
 
-(defn response [content-type body] "Generic get response"
+(defn response [body content-type] "Generic get response"
   (-> (resp/response body)
       (resp/content-type content-type)))
 
@@ -32,13 +32,15 @@
        (drawbridge req))
 
   (GET "/logs/:file" [file :as req]
-       {:status 200
-        :headers {"Content-Type" "text/plain"}
-        :body (slurp (format "/tmp/%s" file))})
+       (-> "/tmp/%s"
+           (format file)
+           slurp
+           (response "text/plain")))
 
   (GET "/" []
-       (->> "A simple webserver to retrieve the log file specified in the url /logs/:file."
+       (-> "A simple webserver to retrieve the log file specified in the url /logs/:file."
             (response "text/plain")))
+
 
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
